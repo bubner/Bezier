@@ -8,8 +8,8 @@ public class ReferenceLines : MonoBehaviour
     {
         lineRenderer = new GameObject("Line").AddComponent<LineRenderer>();
         lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
-        lineRenderer.startColor = new Color(0.5f, 0.5f, 0.5f, 0.15f);;
-        lineRenderer.endColor = new Color(0.5f, 0.5f, 0.5f, 0.15f);;
+        lineRenderer.startColor = new Color(0.5f, 0.5f, 0.5f, 0.15f);
+        lineRenderer.endColor = new Color(0.5f, 0.5f, 0.5f, 0.15f);
         lineRenderer.startWidth = 0.05f;
         lineRenderer.endWidth = 0.05f;
         lineRenderer.useWorldSpace = true;

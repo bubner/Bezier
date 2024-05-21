@@ -6,8 +6,8 @@ using UnityEngine;
 public class Bezier : MonoBehaviour
 {
     public static Bezier instance => FindObjectOfType<Bezier>();
-    public float resolution = 0.25f;
-    
+    public float resolution = 0.004f;
+
     [HideInInspector] public Vector2[] controlPoints;
     private Vector2[] lastPoints;
     private LineRenderer bezierRenderer;
@@ -39,7 +39,7 @@ public class Bezier : MonoBehaviour
     /// <summary>
     /// Render the Bézier curve based on the control points.
     /// </summary>
-    private void GenerateBezierCurve()
+    public void GenerateBezierCurve()
     {
         // Progress from t 0->1 at resolution interval and plot Bézier curve points
         ArrayList newVertices = new();
@@ -52,7 +52,7 @@ public class Bezier : MonoBehaviour
         bezierRenderer.positionCount = newVertices.Count;
         for (int i = 0; i < newVertices.Count; i++)
         {
-            bezierRenderer.SetPosition(i, (Vector2) newVertices[i]);
+            bezierRenderer.SetPosition(i, (Vector2)newVertices[i]);
         }
 
         lastPoints = controlPoints;
@@ -67,8 +67,8 @@ public class Bezier : MonoBehaviour
     private static Vector2 BezierVec(Vector2[] vectors, double t)
     {
         return new Vector2(
-            (float) BezierFunc(vectors.Select(v => v.x).ToArray(), t),
-            (float) BezierFunc(vectors.Select(v => v.y).ToArray(), t)
+            (float)BezierFunc(vectors.Select(v => v.x).ToArray(), t),
+            (float)BezierFunc(vectors.Select(v => v.y).ToArray(), t)
         );
     }
 
@@ -115,7 +115,7 @@ public class Bezier : MonoBehaviour
         // x! = x(x-1)!
         return x * Fac(x - 1);
     }
-    
+
     /// <summary>
     /// Compare two vector lists for equality.
     /// </summary>
