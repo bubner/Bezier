@@ -15,3 +15,4 @@ _Bézier curve general definition_
 - Slider/animation for interpolation ratio t
 - Resolution adjustment
 - Drawpoint construction lines (as per resolution)
+- Coordinate plane
