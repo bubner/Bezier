@@ -332,7 +332,7 @@ MonoBehaviour:
   m_FillRect: {fileID: 1259447992}
   m_HandleRect: {fileID: 593708468}
   m_Direction: 1
-  m_MinValue: 0.004
+  m_MinValue: 0.002
   m_MaxValue: 1
   m_WholeNumbers: 0
   m_Value: 0.004
@@ -976,7 +976,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea3055129e4eb8c72ba11a3e23cecaca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resolution: 0.004
+  resolution: 0.002
   controlPoints: []
 --- !u!4 &702130685
 Transform:
