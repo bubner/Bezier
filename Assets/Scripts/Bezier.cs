@@ -43,10 +43,12 @@ public class Bezier : MonoBehaviour
     {
         // Progress from t 0->1 at resolution interval and plot Bézier curve points
         ArrayList newVertices = new();
-        for (float t = 0; t <= 1; t += resolution)
+        for (float t = 0; t < 1; t += resolution)
         {
             newVertices.Add(BezierVec(controlPoints, t));
         }
+        // Always include t=1
+        newVertices.Add(BezierVec(controlPoints, 1));
 
         // Update the line renderer with the new vertices
         bezierRenderer.positionCount = newVertices.Count;
