@@ -9,9 +9,10 @@ _Bézier curve general definition_
 - Add up to 171 points (`double` datatype precision)
 - Remove individual or all points
 - Edit points and reflect changes dynamically and instantly (like Desmos)
-- Adjust resolution of rendered curve
+- Scrub along a vector by interpolation ratio `t` with a slider or animation
+- Adjust resolution (delta t) of rendered curve
 
 ### TODO
-- Slider/animation for interpolation ratio t
-- Drawpoint construction lines (as per resolution)
+- Drawpoint construction lines for t slider
 - Coordinate plane
+- Ability to make multiple Bezier curves

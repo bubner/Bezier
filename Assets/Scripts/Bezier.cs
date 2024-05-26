@@ -66,7 +66,7 @@ public class Bezier : MonoBehaviour
     /// <param name="vectors">The control points</param>
     /// <param name="t">Interpolation ratio in [0, 1]</param>
     /// <returns>A vector at t along the control points</returns>
-    private static Vector2 BezierVec(Vector2[] vectors, double t)
+    public static Vector2 BezierVec(Vector2[] vectors, double t)
     {
         return new Vector2(
             (float)BezierFunc(vectors.Select(v => v.x).ToArray(), t),
@@ -108,14 +108,18 @@ public class Bezier : MonoBehaviour
     /// <summary>
     /// Take the factorial (!) of an integer.
     /// </summary>
-    /// <param name="x">the number to take the factorial of</param>
+    /// <param name="x">the number to take the factorial of, for all x >= 0</param>
     /// <returns>The factorial of x</returns>
     private static double Fac(int x)
     {
-        if (x == 0)
-            return 1;
-        // x! = x(x-1)!
-        return x * Fac(x - 1);
+        double o = 1;
+        // {x!}=\prod_{i=1}^{x}i
+        for (int i = x; i >= 2; i--)
+        {
+            o *= i;
+        }
+
+        return o;
     }
 
     /// <summary>

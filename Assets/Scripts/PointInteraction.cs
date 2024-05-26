@@ -2,8 +2,16 @@ using UnityEngine;
 
 public class PointInteraction : MonoBehaviour
 {
+    private Camera mainCamera;
+    private SpriteRenderer pointRenderer;
     private bool clicking;
     private bool mouseOver;
+
+    internal void Start()
+    {
+        mainCamera = Camera.main;
+        pointRenderer = GetComponent<SpriteRenderer>();
+    }
 
     public bool IsInteracting()
     {
@@ -14,15 +22,17 @@ public class PointInteraction : MonoBehaviour
     {
         if (clicking)
         {
-            transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            transform.position = mainCamera.ScreenToWorldPoint(Input.mousePosition);
             // Lock Z
             transform.position = new Vector3(transform.position.x, transform.position.y, 0);
-            // Clamp to screen
-            transform.position = new Vector3(Mathf.Clamp(transform.position.x, -8.5f, 8.5f),
-                Mathf.Clamp(transform.position.y, -5f, 5f), 0);
+            // Clamp to screen using the camera dimensions
+            Vector3 screenPos = mainCamera.WorldToScreenPoint(transform.position);
+            screenPos.x = Mathf.Clamp(screenPos.x, 0, Screen.width);
+            screenPos.y = Mathf.Clamp(screenPos.y, 0, Screen.height);
+            transform.position = mainCamera.ScreenToWorldPoint(screenPos);
         }
 
-        GetComponent<SpriteRenderer>().color = IsInteracting() ? Color.green : Color.red;
+        pointRenderer.color = IsInteracting() ? Color.green : Color.red;
     }
 
     internal void OnMouseDown()
