@@ -7,6 +7,7 @@ public class TRunner : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI text;
     [SerializeField] private GameObject tChanger;
+    [SerializeField] private GameObject rtToggler;
     [SerializeField] private GameObject pointPrefab;
     [SerializeField] private Image animateButtonImage;
 
@@ -39,6 +40,7 @@ public class TRunner : MonoBehaviour
         // Show only at max resolution and when we have enough points
         bool shouldRun = Bezier.isAtMaxResolution && Bezier.instance.controlPoints.Length > 1;
         tChanger.SetActive(shouldRun);
+        rtToggler.SetActive(shouldRun);
         // Additionally only show the point in the range 0 < t < 1 to prevent overlap
         point.SetActive(shouldRun && slider.value != 0 && !Mathf.Approximately(slider.value, 1f));
         animating = animating && shouldRun;

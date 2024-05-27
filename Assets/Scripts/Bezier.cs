@@ -26,6 +26,7 @@ public class Bezier : MonoBehaviour
     public float resolution = 0.002f;
 
     [SerializeField] private Slider tSlider;
+    [SerializeField] private Toggle rtToggle;
     [HideInInspector] public Vector2[] controlPoints;
     private Vector2[] lastPoints;
     private LineRenderer bezierRenderer;
@@ -59,6 +60,12 @@ public class Bezier : MonoBehaviour
         // Performance optimisation: only generate the curve if required
         if (CompareVectorArrays(controlPoints, lastPoints) && !isRealtimeRender)
             return;
+
+        if (isRealtimeRender && !Mathf.Approximately(resolution, MAX_RESOLUTION))
+        {
+            // Disable realtime rendering if we are not at max resolution as it won't mean anything
+            rtToggle.isOn = false;
+        }
 
         GenerateBezierCurve();
     }

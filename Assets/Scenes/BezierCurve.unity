@@ -1406,6 +1406,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resolution: 0.002
   tSlider: {fileID: 266660078}
+  rtToggle: {fileID: 1908331209}
   controlPoints: []
 --- !u!4 &702130685
 Transform:
@@ -1569,6 +1570,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   text: {fileID: 1103495566}
   tChanger: {fileID: 266660076}
+  rtToggler: {fileID: 1908331207}
   pointPrefab: {fileID: 6756880459129110886, guid: e9db097c833861f299a6291b00fa83dc, type: 3}
   animateButtonImage: {fileID: 1725978010}
 --- !u!1 &706020071
