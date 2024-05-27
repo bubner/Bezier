@@ -10,9 +10,9 @@ _Bézier curve general definition_
 - Remove individual or all points
 - Edit points and reflect changes dynamically and instantly (like Desmos)
 - Scrub along a vector by interpolation ratio `t` with a slider or animation
+  - Draw-point scrubbing `t` shows construction lines as a set of linear interpolations
 - Adjust resolution (delta t) of rendered curve
 
 ### TODO
-- Drawpoint construction lines for t slider
 - Coordinate plane
 - Ability to make multiple Bezier curves

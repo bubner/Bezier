@@ -1,75 +1,74 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class ReferenceLines : MonoBehaviour
 {
     [SerializeField] private Slider tSlider;
     [SerializeField] private GameObject pointPrefab;
 
-    private int lastLength;
-    private readonly List<LineRenderer> lineRenderers = new();
-    private readonly List<GameObject> points = new();
+    private readonly List<Subline> renderers = new();
+    private Vector2[] lastControlPoints = Array.Empty<Vector2>();
+    private float lastT;
 
     internal void Start()
     {
-        lineRenderers.Add(new GameObject("Line").AddComponent<LineRenderer>());
-        lineRenderers.Add(new GameObject("SubLine").AddComponent<LineRenderer>());
-        for (int i = 0; i < 2; i++)
-        {
-            lineRenderers[i].material = new Material(Shader.Find("Sprites/Default"));
-            lineRenderers[i].startColor = new Color(0.5f, 0.5f, 0.5f, 0.15f);
-            lineRenderers[i].endColor = new Color(0.5f, 0.5f, 0.5f, 0.15f);
-            lineRenderers[i].startWidth = 0.05f;
-            lineRenderers[i].endWidth = 0.05f;
-            lineRenderers[i].useWorldSpace = true;
-        }
+        GenerateRefs();
     }
 
-    internal void Update()
+    private static Color GetRandomVariantOfGray()
+    {
+        float random = Random.Range(0.25f, 0.8f);
+        return new Color(random, random, random, 1f);
+    }
+
+    private void GenerateRefs()
+    {
+        // Remove all existing renderers
+        foreach (Subline r in renderers)
+            r.Destroy();
+        renderers.Clear();
+
+        // For any Bezier, there will be n-1 lines
+        for (float i = 0; i < Bezier.instance.controlPoints.Length - 1; i++)
+            renderers.Add(new Subline(pointPrefab, GetRandomVariantOfGray()));
+    }
+
+    internal void FixedUpdate()
     {
         Vector2[] controlPoints = Bezier.instance.controlPoints;
-        if (controlPoints.Length < 2 || !Mathf.Approximately(Bezier.instance.resolution, 0.002f))
+        // Cannot render
+        if (controlPoints.Length < 2 || !Bezier.isAtMaxResolution)
         {
-            for (int i = 0; i < 2; i++)
-            {
-                lineRenderers[i].enabled = false;
-                foreach (GameObject point in points)
-                {
-                    point.SetActive(false);
-                }
-            }
+            foreach (Subline r in renderers)
+                r.Disable();
             return;
         }
 
-        if (lastLength != controlPoints.Length)
+        foreach (Subline r in renderers)
+            r.Enable();
+
+        // Performance optimisation: only generate the curve if required
+        if (Bezier.CompareVectorArrays(lastControlPoints, controlPoints) && Mathf.Approximately(tSlider.value, lastT))
+            return;
+
+        if (Bezier.instance.controlPoints.Length != lastControlPoints.Length)
         {
-            foreach (GameObject point in points)
-                Destroy(point);
-
-            points.Clear();
-            for (int i = 0; i < controlPoints.Length - 1; i++)
-                points.Add(Instantiate(pointPrefab));
-
-            lineRenderers[1].positionCount = controlPoints.Length - 1;
+            // Control points have been physically modified, we need to scrap everything
+            GenerateRefs();
         }
 
-        for (int i = 0; i < controlPoints.Length - 1; i++)
+        // Rerender all lines
+        renderers[0].Render(controlPoints, tSlider.value);
+        for (int i = 1; i < renderers.Count; i++)
         {
-            Vector2 vertex = Vector2.Lerp(controlPoints[i], controlPoints[i + 1], tSlider.value);
-            points[i].transform.position = vertex;
-            lineRenderers[1].SetPosition(i, vertex);
+            // Use the render points of the last line as the control points for the next
+            renderers[i].Render(renderers[i - 1].GetNewVertices(tSlider.value), tSlider.value);
         }
 
-        for (int i = 0; i < 2; i++)
-            lineRenderers[i].enabled = true;
-        foreach (GameObject point in points)
-            point.SetActive(true);
-
-        lineRenderers[0].positionCount = controlPoints.Length;
-        for (int i = 0; i < controlPoints.Length; i++)
-            lineRenderers[0].SetPosition(i, controlPoints[i]);
-
-        lastLength = controlPoints.Length;
+        lastT = tSlider.value;
+        lastControlPoints = controlPoints;
     }
 }

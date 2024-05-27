@@ -5,8 +5,24 @@ using UnityEngine;
 
 public class Bezier : MonoBehaviour
 {
-    public static Bezier instance => FindObjectOfType<Bezier>();
-    public float resolution = 0.004f;
+    private static Bezier _instance;
+
+    public static Bezier instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                // Cache the instance for future use
+                _instance = FindObjectOfType<Bezier>();
+            }
+            return _instance;
+        }
+    }
+
+    public static bool isAtMaxResolution => Mathf.Approximately(instance.resolution, MAX_RESOLUTION);
+    private const float MAX_RESOLUTION = 0.002f;
+    public float resolution = 0.002f;
 
     [HideInInspector] public Vector2[] controlPoints;
     private Vector2[] lastPoints;
@@ -26,7 +42,7 @@ public class Bezier : MonoBehaviour
     {
         // Fetch new points, "GameController" tag used for all control points
         controlPoints = GameObject.FindGameObjectsWithTag("GameController")
-            .Select(o => new Vector2(o.transform.position.x, o.transform.position.y))
+            .Select(o => (Vector2)o.transform.position)
             .ToArray();
 
         // Performance optimisation: only generate the curve if required
@@ -128,7 +144,7 @@ public class Bezier : MonoBehaviour
     /// <param name="a">List of first vectors</param>
     /// <param name="b">List of second vectors</param>
     /// <returns>Whether the vectors inside the arrays are equal</returns>
-    private static bool CompareVectorArrays(Vector2[] a, Vector2[] b)
+    public static bool CompareVectorArrays(Vector2[] a, Vector2[] b)
     {
         if (a == null || b == null || a.Length != b.Length)
             return false;

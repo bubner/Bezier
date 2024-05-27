@@ -1,7 +1,6 @@
 using System.Globalization;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class TRunner : MonoBehaviour
@@ -18,9 +17,12 @@ public class TRunner : MonoBehaviour
     internal void Start()
     {
         point = Instantiate(pointPrefab);
-        point.GetComponent<SpriteRenderer>().color = Color.magenta;
+        point.GetComponent<SpriteRenderer>().color = Color.cyan;
+        // Always on top
+        point.layer = 6;
         slider = tChanger.GetComponent<Slider>();
-        slider.value = 1;
+        // Default to t=0.5
+        slider.value = 0.5f;
         slider.onValueChanged.AddListener(v =>
         {
             text.text = "t=" + v.ToString(CultureInfo.InvariantCulture);
@@ -35,8 +37,7 @@ public class TRunner : MonoBehaviour
     internal void Update()
     {
         // Show only at max resolution and when we have enough points
-        bool shouldRun = Mathf.Approximately(Bezier.instance.resolution, 0.002f)
-                         && Bezier.instance.controlPoints.Length > 1;
+        bool shouldRun = Bezier.isAtMaxResolution && Bezier.instance.controlPoints.Length > 1;
         tChanger.SetActive(shouldRun);
         // Additionally only show the point in the range 0 < t < 1 to prevent overlap
         point.SetActive(shouldRun && slider.value != 0 && !Mathf.Approximately(slider.value, 1f));
@@ -44,7 +45,7 @@ public class TRunner : MonoBehaviour
         animateButtonImage.color = animating ? Color.green : new Color(127, 127, 127);
 
         // Animate t progression if required
-        slider.value += animating ? Time.deltaTime / 3f : 0;
+        slider.value += animating ? Time.deltaTime / Bezier.instance.controlPoints.Length : 0;
         if (animating && slider.value >= 1)
             slider.value = 0;
 
