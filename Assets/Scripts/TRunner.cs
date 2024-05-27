@@ -1,20 +1,24 @@
 using System.Globalization;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class TRunner : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI text;
     [SerializeField] private GameObject tChanger;
-    [SerializeField] private GameObject point;
+    [SerializeField] private GameObject pointPrefab;
     [SerializeField] private Image animateButtonImage;
 
+    private GameObject point;
     private Slider slider;
     private bool animating;
 
     internal void Start()
     {
+        point = Instantiate(pointPrefab);
+        point.GetComponent<SpriteRenderer>().color = Color.magenta;
         slider = tChanger.GetComponent<Slider>();
         slider.value = 1;
         slider.onValueChanged.AddListener(v =>
