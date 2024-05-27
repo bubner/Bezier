@@ -2832,7 +2832,7 @@ GameObject:
   - component: {fileID: 1908331208}
   - component: {fileID: 1908331209}
   m_Layer: 5
-  m_Name: RTRender
+  m_Name: Realtime Render
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2855,10 +2855,10 @@ RectTransform:
   - {fileID: 444573417}
   m_Father: {fileID: 2046048550}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -108.69996, y: -267.8}
-  m_SizeDelta: {x: 23.8643, y: 20}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 446.30005, y: 33.200012}
+  m_SizeDelta: {x: 23.864319, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1908331209
 MonoBehaviour:
