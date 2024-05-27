@@ -36,7 +36,7 @@ public class ReferenceLines : MonoBehaviour
             renderers.Add(new Subline(pointPrefab, GetRandomVariantOfGray()));
     }
 
-    internal void FixedUpdate()
+    internal void Update()
     {
         Vector2[] controlPoints = Bezier.instance.controlPoints;
         // Cannot render

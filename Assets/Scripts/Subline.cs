@@ -51,7 +51,16 @@ public class Subline
         foreach (Vector2 point in controlPoints)
             renderPoints[0].Add(Object.Instantiate(pointPrefab, point, Quaternion.identity));
 
-        // Draw the interpolated line
+        // Set the color of the points at the current iteration depth
+        renderPoints[0].ForEach(o => o.GetComponent<SpriteRenderer>().color = color);
+
+        // Should not draw an interpolated line if we have only two points (otherwise we will
+        // overlap with the main Bézier draw point that is being rendered externally)
+        if (controlPoints.Length == 2)
+            return;
+
+        // Draw the interpolated line with the same method but instead linear interpolating between
+        // the control points. These control points will increase in depth as the iterations progress
         renderers[1].positionCount = controlPoints.Length - 1;
         for (int i = 0; i < controlPoints.Length - 1; i++)
         {
@@ -61,12 +70,7 @@ public class Subline
             renderPoints[1][i].transform.position = vertex;
             renderers[1].SetPosition(i, vertex);
         }
-
-        // Set the color of the iteration depth
-        for (int i = 0; i < 2; i++)
-        {
-            renderPoints[i].ForEach(o => o.GetComponent<SpriteRenderer>().color = color);
-        }
+        renderPoints[1].ForEach(o => o.GetComponent<SpriteRenderer>().color = color);
     }
 
     public void Disable()
