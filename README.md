@@ -12,6 +12,7 @@ _Bézier curve general definition_
 - Scrub along a vector by interpolation ratio `t` with a slider or animation
   - Draw-point scrubbing `t` shows construction lines as a set of linear interpolations
 - Adjust resolution (delta t) of rendered curve
+- Real-time curve rendering
 
 ### TODO
 - Coordinate plane

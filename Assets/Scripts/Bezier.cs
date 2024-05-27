@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Bezier : MonoBehaviour
 {
@@ -24,13 +25,23 @@ public class Bezier : MonoBehaviour
     private const float MAX_RESOLUTION = 0.002f;
     public float resolution = 0.002f;
 
+    [SerializeField] private Slider tSlider;
     [HideInInspector] public Vector2[] controlPoints;
     private Vector2[] lastPoints;
     private LineRenderer bezierRenderer;
+    private bool isRealtimeRender;
+
+    public void OnRealtimeRenderPress(bool newState)
+    {
+        isRealtimeRender = newState;
+        // Force a refresh
+        GenerateBezierCurve();
+    }
 
     internal void Awake()
     {
         bezierRenderer = GetComponent<LineRenderer>();
+        gameObject.layer = 7;
         bezierRenderer.startColor = Color.white;
         bezierRenderer.endColor = Color.white;
         bezierRenderer.startWidth = 0.1f;
@@ -46,7 +57,7 @@ public class Bezier : MonoBehaviour
             .ToArray();
 
         // Performance optimisation: only generate the curve if required
-        if (CompareVectorArrays(controlPoints, lastPoints))
+        if (CompareVectorArrays(controlPoints, lastPoints) && !isRealtimeRender)
             return;
 
         GenerateBezierCurve();
@@ -59,12 +70,14 @@ public class Bezier : MonoBehaviour
     {
         // Progress from t 0->1 at resolution interval and plot Bézier curve points
         ArrayList newVertices = new();
-        for (float t = 0; t < 1; t += resolution)
+        float maxRes = isRealtimeRender ? tSlider.value : 1f;
+        for (float t = 0; t < maxRes; t += resolution)
         {
             newVertices.Add(BezierVec(controlPoints, t));
         }
-        // Always include t=1
-        newVertices.Add(BezierVec(controlPoints, 1));
+        // Ensure the last point is always the last control point
+        if (Mathf.Approximately(maxRes, 1f))
+            newVertices.Add(BezierVec(controlPoints, 1));
 
         // Update the line renderer with the new vertices
         bezierRenderer.positionCount = newVertices.Count;
