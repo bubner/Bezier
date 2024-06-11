@@ -13,7 +13,3 @@ _Bézier curve general definition_
   - Draw-point scrubbing `t` shows construction lines as a set of linear interpolations
 - Adjust resolution (delta t) of rendered curve
 - Real-time curve rendering
-
-### TODO
-- Coordinate plane
-- Ability to make multiple Bezier curves
