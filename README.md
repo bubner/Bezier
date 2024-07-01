@@ -3,7 +3,7 @@
 $$\text{Bézier curve general formula}$$
 $$B(t) = \sum_{i=0}^{n} \binom{n}{i} (1-t)^{n-i} t^i P_i$$
 $$\therefore B(t) = \sum_{i=0}^{n} \frac{n!}{i!(n-i)!} (1-t)^{n-i} t^i P_i$$
-$$\therefore \binom{n}{k} = \frac{n!}{k!(n-k)!}$$
+$$\because \binom{n}{k} = \frac{n!}{k!(n-k)!}$$
 <br>
 This small Unity app generates Bézier curves using the explicit definition of summated binomial coefficients and linear interpolation. Created as a proof-of-concept and for fun to learn more about the math involved in computer graphics.
 ## Features
